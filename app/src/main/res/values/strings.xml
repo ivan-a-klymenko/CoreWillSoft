@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">CWS</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="add_transaction">Add transaction</string>
+    <string name="ft_cancel">Cancel</string>
+    <string name="ft_done">Done</string>
+    <string name="ft_income">Income</string>
+    <string name="ft_expense">Expense</string>
+    <string name="select_account">Select account</string>
+</resources>
