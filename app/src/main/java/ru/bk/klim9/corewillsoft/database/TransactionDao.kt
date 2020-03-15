@@ -62,7 +62,7 @@ interface TransactionDao {
     fun flowExpenses(expenseName: String): Flowable<Expense>
 
 
-    @Query("SELECT * FROM transactions")
+    @Query("SELECT * FROM transactions ORDER BY id DESC")
     fun flowTransactions(): Flowable<List<Transaction>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

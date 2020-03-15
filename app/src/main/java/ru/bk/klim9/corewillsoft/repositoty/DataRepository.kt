@@ -56,6 +56,7 @@ class DataRepository(private val transactionDao: TransactionDao) {
             account.amount = balance
             accountSortResult.add(0, Item(ACCOUNT, null, account))
         }
+        if (accountSortResult.size > 10) return accountSortResult.subList(0, 10)
         return accountSortResult
     }
 
