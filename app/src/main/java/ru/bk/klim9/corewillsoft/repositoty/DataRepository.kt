@@ -4,16 +4,11 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.functions.BiFunction
 import ru.bk.klim9.corewillsoft.database.TransactionDao
-import ru.bk.klim9.corewillsoft.database.content.Account
-import ru.bk.klim9.corewillsoft.database.content.Expense
-import ru.bk.klim9.corewillsoft.database.content.Income
-import ru.bk.klim9.corewillsoft.database.content.Transaction
+import ru.bk.klim9.corewillsoft.database.content.*
 import ru.bk.klim9.corewillsoft.ui.dashboard.ACCOUNT
+import ru.bk.klim9.corewillsoft.ui.dashboard.DashboardAdapter.Item
 import ru.bk.klim9.corewillsoft.ui.dashboard.TRANSACTION
-import ru.bk.klim9.corewillsoft.ui.dashboard.DashboardAdapter.*
-import java.util.ArrayList
-
-private const val TAG = "DataRepository"
+import java.util.*
 
 class DataRepository(private val transactionDao: TransactionDao) {
 
@@ -21,10 +16,12 @@ class DataRepository(private val transactionDao: TransactionDao) {
         accounts: ArrayList<Account>,
         incomes: ArrayList<Income>,
         expenses: ArrayList<Expense>
-    ) : Completable {
-        return Completable.mergeArray(transactionDao.saveAllAccounts(accounts),
+    ): Completable {
+        return Completable.mergeArray(
+            transactionDao.saveAllAccounts(accounts),
             transactionDao.saveAllIncomes(incomes),
-            transactionDao.saveAllExpenses(expenses))
+            transactionDao.saveAllExpenses(expenses)
+        )
     }
 
     fun flowTransactions(): Flowable<List<Item>> {
@@ -45,11 +42,21 @@ class DataRepository(private val transactionDao: TransactionDao) {
 
     private fun sortForAccount(account: Account, transactions: List<Transaction>): List<Item> {
         val accountSortResult = ArrayList<Item>()
+        var balance = 0
         for (transaction in transactions) {
-            if (account.accountName == transaction.accountName) accountSortResult.add(Item(
-                TRANSACTION, transaction, null))
+            if (account.accountName == transaction.accountName) {
+                accountSortResult.add(Item(TRANSACTION, transaction, null))
+                balance = when (transaction.transactionType) {
+                    INCOME -> balance + transaction.amount!!
+                    else -> balance - transaction.amount!!
+                }
+            }
         }
-        if (accountSortResult.isNotEmpty()) accountSortResult.add(0, Item(ACCOUNT, null, account))
+        if (accountSortResult.isNotEmpty()) {
+            account.amount = balance
+            accountSortResult.add(0, Item(ACCOUNT, null, account))
+        }
+        if (accountSortResult.size > 10) return accountSortResult.subList(0, 10)
         return accountSortResult
     }
 
@@ -63,6 +70,14 @@ class DataRepository(private val transactionDao: TransactionDao) {
 
     fun flowExpenses(): Flowable<List<Expense>> {
         return transactionDao.flowExpenses()
+    }
+
+    fun saveTransaction(transaction: Transaction): Completable {
+        return transactionDao.saveTransaction(transaction)
+    }
+
+    fun deleteTransaction(transaction: Transaction): Completable {
+        return transactionDao.clearTransactions(transaction)
     }
 
 }

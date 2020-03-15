@@ -1,10 +1,9 @@
-package ru.bk.klim9.movies.database
+package ru.bk.klim9.corewillsoft.database
 
 import android.content.Context
 
 import androidx.annotation.MainThread
 import androidx.room.Room
-import ru.bk.klim9.corewillsoft.database.TransactionDatabase
 
 /**
  * @author ivan.a.klymenko@gmail.com on 2020-03-14

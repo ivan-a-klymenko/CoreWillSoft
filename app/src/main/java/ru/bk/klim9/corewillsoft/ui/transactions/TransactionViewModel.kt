@@ -1,14 +1,10 @@
 package ru.bk.klim9.corewillsoft.ui.transactions
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import ru.bk.klim9.corewillsoft.database.content.Account
-import ru.bk.klim9.corewillsoft.database.content.Expense
-import ru.bk.klim9.corewillsoft.database.content.Income
+import ru.bk.klim9.corewillsoft.database.content.Transaction
 import ru.bk.klim9.corewillsoft.ui.common.BaseViewModel
 import javax.inject.Inject
 
@@ -59,5 +55,12 @@ class TransactionViewModel @Inject constructor() : BaseViewModel() {
             }, {
                 Log.d(TAG, "flowIncomes error: ${it.message}", it)
             }))
+    }
+
+    fun saveTransaction(transaction: Transaction) {
+        cd.add(repository.saveTransaction(transaction)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe())
     }
 }

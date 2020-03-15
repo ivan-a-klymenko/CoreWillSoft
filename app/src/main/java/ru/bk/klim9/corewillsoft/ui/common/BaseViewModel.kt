@@ -1,6 +1,5 @@
 package ru.bk.klim9.corewillsoft.ui.common
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 import ru.bk.klim9.corewillsoft.repositoty.DataRepository
@@ -14,8 +13,6 @@ open class BaseViewModel @Inject constructor() : ViewModel() {
     @Inject
     lateinit var repository: DataRepository
     protected open val cd = CompositeDisposable()
-
-    open val loadingLd = MutableLiveData<Boolean>()
 
     override fun onCleared() {
         super.onCleared()
