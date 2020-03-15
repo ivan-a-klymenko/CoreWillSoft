@@ -72,5 +72,5 @@ interface TransactionDao {
     fun saveTransaction(transaction: Transaction): Completable
 
     @Delete
-    fun clearTransactions(incomes: List<Transaction>)
+    fun clearTransactions(transaction: Transaction): Completable
 }

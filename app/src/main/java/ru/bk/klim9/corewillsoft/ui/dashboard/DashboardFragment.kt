@@ -22,7 +22,7 @@ class DashboardFragment : Fragment() {
     private val viewModel: DashboardViewModel by lazy {
         ViewModelProvider(this, viewModelFactory).get(DashboardViewModel::class.java)
     }
-    lateinit var adapter: DashboardAdapter
+    private lateinit var adapter: DashboardAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidSupportInjection.inject(this)
@@ -51,6 +51,9 @@ class DashboardFragment : Fragment() {
 
     private fun initUi() {
         adapter = DashboardAdapter(object : DashboardAdapter.Action {
+            override fun deleteClick(transaction: Transaction) {
+                viewModel.deleteTransaction(transaction)
+            }
 
         })
         fdTransactionsRv.adapter = adapter

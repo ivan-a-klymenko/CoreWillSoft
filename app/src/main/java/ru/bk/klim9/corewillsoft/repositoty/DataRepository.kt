@@ -18,10 +18,12 @@ class DataRepository(private val transactionDao: TransactionDao) {
         accounts: ArrayList<Account>,
         incomes: ArrayList<Income>,
         expenses: ArrayList<Expense>
-    ) : Completable {
-        return Completable.mergeArray(transactionDao.saveAllAccounts(accounts),
+    ): Completable {
+        return Completable.mergeArray(
+            transactionDao.saveAllAccounts(accounts),
             transactionDao.saveAllIncomes(incomes),
-            transactionDao.saveAllExpenses(expenses))
+            transactionDao.saveAllExpenses(expenses)
+        )
     }
 
     fun flowTransactions(): Flowable<List<Item>> {
@@ -74,6 +76,10 @@ class DataRepository(private val transactionDao: TransactionDao) {
 
     fun saveTransaction(transaction: Transaction): Completable {
         return transactionDao.saveTransaction(transaction)
+    }
+
+    fun deleteTransaction(transaction: Transaction): Completable {
+        return transactionDao.clearTransactions(transaction)
     }
 
 }

@@ -7,6 +7,7 @@ import io.reactivex.schedulers.Schedulers
 import ru.bk.klim9.corewillsoft.database.content.Account
 import ru.bk.klim9.corewillsoft.database.content.Expense
 import ru.bk.klim9.corewillsoft.database.content.Income
+import ru.bk.klim9.corewillsoft.database.content.Transaction
 import ru.bk.klim9.corewillsoft.ui.common.BaseViewModel
 import java.util.ArrayList
 import javax.inject.Inject
@@ -37,6 +38,14 @@ class DashboardViewModel @Inject constructor() : BaseViewModel() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe())
+    }
+
+    fun deleteTransaction(transaction: Transaction) {
+        cd.add(repository.deleteTransaction(transaction)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe())
+
     }
 
 }
