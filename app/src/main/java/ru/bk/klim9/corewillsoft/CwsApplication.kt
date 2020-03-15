@@ -5,7 +5,7 @@ import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
 import ru.bk.klim9.corewillsoft.di.ApplicationComponent
 import ru.bk.klim9.corewillsoft.di.DaggerApplicationComponent
-import ru.bk.klim9.movies.database.DatabaseHolder
+import ru.bk.klim9.corewillsoft.database.DatabaseHolder
 
 /**
  * @author ivan.a.klymenko@gmail.com on 2020-03-14

@@ -6,11 +6,9 @@ import io.reactivex.functions.BiFunction
 import ru.bk.klim9.corewillsoft.database.TransactionDao
 import ru.bk.klim9.corewillsoft.database.content.*
 import ru.bk.klim9.corewillsoft.ui.dashboard.ACCOUNT
+import ru.bk.klim9.corewillsoft.ui.dashboard.DashboardAdapter.Item
 import ru.bk.klim9.corewillsoft.ui.dashboard.TRANSACTION
-import ru.bk.klim9.corewillsoft.ui.dashboard.DashboardAdapter.*
-import java.util.ArrayList
-
-private const val TAG = "DataRepository"
+import java.util.*
 
 class DataRepository(private val transactionDao: TransactionDao) {
 

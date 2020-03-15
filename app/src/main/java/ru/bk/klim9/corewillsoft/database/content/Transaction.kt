@@ -1,7 +1,6 @@
 package ru.bk.klim9.corewillsoft.database.content
 
 import android.annotation.SuppressLint
-import android.text.format.DateUtils
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.text.SimpleDateFormat
