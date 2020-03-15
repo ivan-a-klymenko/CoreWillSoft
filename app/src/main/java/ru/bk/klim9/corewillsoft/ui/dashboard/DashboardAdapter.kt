@@ -86,12 +86,12 @@ class TransactionItemView @JvmOverloads constructor(
         itDateTv.text = transaction.toDate()
         when (transaction.transactionType) {
             INCOME -> {
-                val s = "-${transaction.amount}"
-                itAmountTv.text = s
+                itAmountTv.text = transaction.amount.toString()
                 setStyle(R.style.AccountIncome,itAmountTv)
             }
             else -> {
-                itAmountTv.text = transaction.amount.toString()
+                val s = "-${transaction.amount}"
+                itAmountTv.text = s
                 setStyle(R.style.AccountExpenses,itAmountTv)
             }
         }

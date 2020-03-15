@@ -1,14 +1,12 @@
 package ru.bk.klim9.corewillsoft.ui.transactions
 
 import android.os.Bundle
-import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -19,6 +17,8 @@ import ru.bk.klim9.corewillsoft.R
 import ru.bk.klim9.corewillsoft.database.content.EXPENSE
 import ru.bk.klim9.corewillsoft.database.content.INCOME
 import ru.bk.klim9.corewillsoft.database.content.Transaction
+import ru.bk.klim9.corewillsoft.utils.hideKeyboard
+import ru.bk.klim9.corewillsoft.utils.toast
 import javax.inject.Inject
 
 
@@ -34,9 +34,6 @@ class TransactionFragment : Fragment() {
     private var incomes: List<String>? = null
     private var expenses: List<String>? = null
     private var accounts: List<String>? = null
-    private var account: String? = null
-    private var income: String? = null
-    private var expense: String? = null
     private val transaction: Transaction = Transaction()
     private val categoryAdapter: ArrayAdapter<String> by lazy {
         ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, ArrayList<String>())
@@ -92,7 +89,6 @@ class TransactionFragment : Fragment() {
                     transaction.transactionName = expenses?.get(position)
                     transaction.transactionType = EXPENSE
                 }
-                ftCategoryTitleTv.visibility = View.GONE
             }
 
             override fun onNothingSelected(arg0: AdapterView<*>?) {
@@ -104,6 +100,7 @@ class TransactionFragment : Fragment() {
             isIncome = true
             categoryAdapter.clear()
             incomes?.let { it1 -> categoryAdapter.addAll(it1) }
+            transaction.transactionName = incomes?.get(0)
             categoryAdapter.notifyDataSetChanged()
             ftIncomeTv.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_ft_income_pressed)
             ftExpenseTv.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_ft_expense_disabled)
@@ -113,33 +110,40 @@ class TransactionFragment : Fragment() {
             categoryAdapter.clear()
             expenses?.let { it1 -> categoryAdapter.addAll(it1) }
             categoryAdapter.notifyDataSetChanged()
+            transaction.transactionName = expenses?.get(0)
             ftIncomeTv.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_ft_income_disabled)
             ftExpenseTv.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_ft_expense_pressed)
         }
         ftIncomeTv.callOnClick()
         ftCancelTv.setOnClickListener {
-            showToast(R.string.ft_trnsaction_canceled)
+            context?.toast(getString(R.string.ft_trnsaction_canceled))
         }
         ftDoneTv.setOnClickListener {
             val amount = ftAmountEt.text.toString()
-            if (amount.toIntOrNull() != null &&
+            val intAmount = checkValue(amount)
+            if (intAmount != null &&
                 transaction.accountName != null &&
                 transaction.transactionName != null ) {
                 transaction.id = System.currentTimeMillis()
+                transaction.amount = intAmount
+                transaction.transactionType = when {
+                    isIncome -> INCOME
+                    else -> EXPENSE
+                }
                 viewModel.saveTransaction(transaction)
-                showToast(R.string.ft_transaction_saved)
+                context?.toast(getString(R.string.ft_transaction_saved))
+                hideKeyboard()
+                ftAmountEt.setText("")
             } else {
-                showToast(R.string.ft_data_error)
+                context?.toast(getString(R.string.ft_data_error))
             }
         }
     }
 
-    private fun showToast(messageId: Int) {
-        Toast.makeText(
-            requireContext(),
-            getString(messageId),
-            Toast.LENGTH_SHORT
-        ).show()
+    private fun checkValue(amount: String): Int? {
+        if (amount.contains(".")) return amount.substringBefore(".").toIntOrNull()
+        if (amount.contains(",")) return amount.substringBefore(",").toIntOrNull()
+        return amount.toIntOrNull()
     }
 
     private fun initObservers() {
@@ -150,11 +154,11 @@ class TransactionFragment : Fragment() {
         })
         viewModel.expensesLd.observe(viewLifecycleOwner, Observer {
             expenses = it
-            categoryAdapter.clear()
-            categoryAdapter.addAll(it)
         })
         viewModel.incomesLd.observe(viewLifecycleOwner, Observer {
             incomes = it
+            categoryAdapter.clear()
+            categoryAdapter.addAll(it)
         })
 
     }

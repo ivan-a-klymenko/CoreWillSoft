@@ -4,10 +4,7 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.functions.BiFunction
 import ru.bk.klim9.corewillsoft.database.TransactionDao
-import ru.bk.klim9.corewillsoft.database.content.Account
-import ru.bk.klim9.corewillsoft.database.content.Expense
-import ru.bk.klim9.corewillsoft.database.content.Income
-import ru.bk.klim9.corewillsoft.database.content.Transaction
+import ru.bk.klim9.corewillsoft.database.content.*
 import ru.bk.klim9.corewillsoft.ui.dashboard.ACCOUNT
 import ru.bk.klim9.corewillsoft.ui.dashboard.TRANSACTION
 import ru.bk.klim9.corewillsoft.ui.dashboard.DashboardAdapter.*
@@ -45,11 +42,20 @@ class DataRepository(private val transactionDao: TransactionDao) {
 
     private fun sortForAccount(account: Account, transactions: List<Transaction>): List<Item> {
         val accountSortResult = ArrayList<Item>()
+        var balance = 0
         for (transaction in transactions) {
-            if (account.accountName == transaction.accountName) accountSortResult.add(Item(
-                TRANSACTION, transaction, null))
+            if (account.accountName == transaction.accountName) {
+                accountSortResult.add(Item(TRANSACTION, transaction, null))
+                balance = when (transaction.transactionType) {
+                    INCOME -> balance + transaction.amount!!
+                    else -> balance - transaction.amount!!
+                }
+            }
         }
-        if (accountSortResult.isNotEmpty()) accountSortResult.add(0, Item(ACCOUNT, null, account))
+        if (accountSortResult.isNotEmpty()) {
+            account.amount = balance
+            accountSortResult.add(0, Item(ACCOUNT, null, account))
+        }
         return accountSortResult
     }
 

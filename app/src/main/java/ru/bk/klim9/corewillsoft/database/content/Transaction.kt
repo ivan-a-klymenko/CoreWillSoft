@@ -1,7 +1,11 @@
 package ru.bk.klim9.corewillsoft.database.content
 
+import android.annotation.SuppressLint
+import android.text.format.DateUtils
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * @author ivan.a.klymenko@gmail.com on 2020-03-14
@@ -21,7 +25,10 @@ data class Transaction (
 
     constructor() : this(null, null, null, null, null)
 
+    @SuppressLint("SimpleDateFormat")
     fun toDate(): String {
-        return "03/07/2019 16:30"
+        val date = Date(this.id!!)
+        val format = SimpleDateFormat("dd/MM/yyyy HH:mm")
+        return format.format(date)
     }
 }
