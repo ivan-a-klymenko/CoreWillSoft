@@ -63,6 +63,7 @@ class TransactionFragment : Fragment() {
 
     private fun initUi() {
         viewModel.getData()
+        accountAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         ftAccountSp.adapter = accountAdapter
         ftAccountSp.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(
@@ -76,6 +77,7 @@ class TransactionFragment : Fragment() {
             override fun onNothingSelected(arg0: AdapterView<*>?) {}
         }
 
+        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         ftCategorySp.adapter = categoryAdapter
         ftCategorySp.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(
