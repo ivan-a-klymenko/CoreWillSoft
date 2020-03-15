@@ -12,12 +12,15 @@ const val EXPENSE = 2
 @Entity(tableName = "transactions")
 data class Transaction (
     @PrimaryKey
-    val id: Long,
-    val accountName: String,
-    val transactionName: String,
-    val transactionType: Int,
-    val amount: Int
+    var id: Long?,
+    var accountName: String?,
+    var transactionName: String?,
+    var transactionType: Int?,
+    var amount: Int?
 ) {
+
+    constructor() : this(null, null, null, null, null)
+
     fun toDate(): String {
         return "03/07/2019 16:30"
     }

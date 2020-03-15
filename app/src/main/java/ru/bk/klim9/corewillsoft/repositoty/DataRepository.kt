@@ -65,4 +65,8 @@ class DataRepository(private val transactionDao: TransactionDao) {
         return transactionDao.flowExpenses()
     }
 
+    fun saveTransaction(transaction: Transaction): Completable {
+        return transactionDao.saveTransaction(transaction)
+    }
+
 }

@@ -9,7 +9,7 @@ enum class Accounts (val account: String) {
     BANK_ACCOUNT("Bank account")
 }
 
-enum class Incomes (val income: String) {
+enum class Expenses (val expense: String) {
     TAX("Tax"),
     GROCERY("Grocery"),
     ENTERTAINMENT("Entertainment"),
@@ -17,7 +17,7 @@ enum class Incomes (val income: String) {
     HEALTH("Health")
 }
 
-enum class Expenses (val expense: String) {
+enum class Incomes (val income: String) {
     SALARY("Salary"),
     DIVIDENDS("Dividends")
 }

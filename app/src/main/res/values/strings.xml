@@ -8,5 +8,10 @@
     <string name="ft_done">Done</string>
     <string name="ft_income">Income</string>
     <string name="ft_expense">Expense</string>
-    <string name="select_account">Select account</string>
+    <string name="ft_select_account">Select account</string>
+    <string name="ft_select_category">Select category</string>
+    <string name="ft_select_amount">Enter amount</string>
+    <string name="ft_trnsaction_canceled">Transaction canceled</string>
+    <string name="ft_transaction_saved">Transaction saved</string>
+    <string name="ft_data_error">You have entered insufficient data</string>
 </resources>

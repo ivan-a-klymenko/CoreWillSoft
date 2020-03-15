@@ -69,7 +69,7 @@ interface TransactionDao {
     fun saveAllTransactions(incomes: List<Transaction>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun saveTransaction(income: Transaction)
+    fun saveTransaction(transaction: Transaction): Completable
 
     @Delete
     fun clearTransactions(incomes: List<Transaction>)
