@@ -11,7 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:labelVisibilityMode="unlabeled"
-        app:itemIconTint="@color/black_70"
+        app:itemIconTint="@drawable/tint_bn_icon"
         android:background="@color/gray_80"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
